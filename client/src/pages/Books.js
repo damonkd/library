@@ -56,30 +56,41 @@ class Books extends Component {
   render() {
     return (
       <Container fluid>
+        
+        <Row>
+          <Col size="md-2">
+            <Link to="/">search</Link>
+          </Col>
+
+          <Col size="md-2">
+            <Link to="/saved">saved</Link>
+          </Col>
+        </Row>
+        
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>What Books Should I Read?</h1>
+              <h1>Google books API</h1>
             </Jumbotron>
             <form>
               <Input
                 value={this.state.title}
                 onChange={this.handleInputChange}
                 name="title"
-                placeholder="Title (required)"
+                placeholder="Title to search"
               />
-              <Input
+              {/* <Input
                 value={this.state.author}
                 onChange={this.handleInputChange}
                 name="author"
                 placeholder="Author (required)"
-              />
-              <TextArea
+              /> */}
+              {/* <TextArea
                 value={this.state.synopsis}
                 onChange={this.handleInputChange}
                 name="synopsis"
                 placeholder="Synopsis (Optional)"
-              />
+              /> */}
               <FormBtn
                 disabled={!(this.state.author && this.state.title)}
                 onClick={this.handleFormSubmit}
@@ -90,7 +101,7 @@ class Books extends Component {
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Books On My List</h1>
+              <h1>Results</h1>
             </Jumbotron>
             {this.state.books.length ? (
               <List>
