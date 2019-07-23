@@ -3,11 +3,11 @@ import axios from "axios";
 export default {
   // Gets all books
   getBooks: function() {
-    return axios.get("/api/books");
+    return axios.get("https://www.googleapis.com/books/v1/volumes?q=harrypotter+intitle");
   },
   // Gets the book with the given id
   getBook: function(id) {
-    return axios.get("/api/books/" + id);
+    return axios.get("https://www.googleapis.com/books/v1/volumes?q=harrypotter+intitle" + id);
   },
   // Deletes the book with the given id
   deleteBook: function(id) {
@@ -15,12 +15,20 @@ export default {
   },
   // Saves a book to the database
   saveBook: function(bookData) {
-    return axios.post("/api/books", bookData);
+    return axios.post("https://www.googleapis.com/books/v1/volumes?q=harrypotter+intitle", bookData);
   },
   search: function() {
     return axios.get("https://www.googleapis.com/books/v1/volumes?q=harrypotter+intitle");
+    
+
+
+    
   },
+  googleBook: function(){
 
-
+    return axios.get("https://www.googleapis.com/books/v1/volumes?q=harrypotter+intitle")
+  }
+  
+  
 
 };

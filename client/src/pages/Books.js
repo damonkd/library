@@ -6,23 +6,38 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import axios from "axios";
 
 class Books extends Component {
+  
+ 
+  
   state = {
     books: [],
     title: "",
     author: "",
-    synopsis: ""
+    synopsis: "",
+    searchTerm: ""
   };
+
+
+
+
+
+
+
+
 
   componentDidMount() {
     this.loadBooks();
   }
 
   loadBooks = () => {
-    API.getBooks()
+    API.googleBook()
       .then(res =>
-        this.setState({ books: res.data, title: "", author: "", synopsis: "" })
+        console.log(res.data),
+        //this.setState({ books: res.data, title: "", author: "", synopsis: "" }),
+        
       )
       .catch(err => console.log(err));
   };
@@ -33,6 +48,13 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
+
+  
+
+
+
+
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -41,15 +63,17 @@ class Books extends Component {
   };
 
   handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveBook({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
+    //event.preventDefault();
+    if (this.state.title) {
+      API.search({
+        //title: this.state.title,
+        //author: this.state.author,
+        //synopsis: this.state.synopsis
       })
+      
         .then(res => this.loadBooks())
         .catch(err => console.log(err));
+        
     }
   };
 
@@ -92,7 +116,7 @@ class Books extends Component {
                 placeholder="Synopsis (Optional)"
               /> */}
               <FormBtn
-                disabled={!(this.state.author && this.state.title)}
+                disabled={!(this.state.title)}
                 onClick={this.handleFormSubmit}
               >
                 Submit Book
