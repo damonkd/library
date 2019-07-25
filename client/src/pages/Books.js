@@ -29,9 +29,9 @@ class Books extends Component {
 
 
 
-  componentDidMount() {
-    this.loadBooks();
-  }
+  // componentDidMount() {
+  //   this.loadBooks();
+  // }
 
   // loadBooks = () => {
   //   API.getBooks()
@@ -44,9 +44,9 @@ class Books extends Component {
   
 
 loadBooks = searchItem => {
-    let test = "jaws"
-    console.log(searchItem)
-    const result =  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${this.state.title}`)
+    //let test = "jaws"
+    //console.log(searchItem)
+    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchItem}`)
   
   
 
@@ -55,12 +55,12 @@ loadBooks = searchItem => {
         title: `${result.volumeInfo.title}`,
         author: `${result.volumeInfo.authors}`,
         published: `${result.volumeInfo.publishedDate}`,
-        image: `${result.volumeInfo.imageLinks.smallThumbnail}`,
+        //image: `${result.volumeInfo.imageLinks.smallThumbnail}`,
         id: `${result.id}`
        // volumeInfo.publishedDate
       })))
     .then(newData => this.setState({books: newData}))
-    .then(res => this.loadBooks())
+    //.then(res => this.loadBooks())
     .catch(error => alert(error))
   };
 
