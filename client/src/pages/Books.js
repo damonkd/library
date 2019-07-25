@@ -48,16 +48,18 @@ loadBooks = searchItem => {
     //console.log(searchItem)
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchItem}`)
   
-  
+    //.then(json => console.log(json))
 
-    .then(json => json.data.items.map(result => (
+  
+    .then(json => json.data.items.map(result =>   (
+      
       {
+        bookId: `${result.id}`,
         title: `${result.volumeInfo.title}`,
         author: `${result.volumeInfo.authors}`,
         published: `${result.volumeInfo.publishedDate}`,
-        //image: `${result.volumeInfo.imageLinks.smallThumbnail}`,
-        id: `${result.id}`
-       // volumeInfo.publishedDate
+        
+       
       })))
     .then(newData => this.setState({books: newData}))
     //.then(res => this.loadBooks())
@@ -111,7 +113,7 @@ render() {
       </Row>
 
       <Row>
-        <Col size="md-6">
+        <Col size="md-12">
           <Jumbotron>
             <h1>Google books API</h1>
           </Jumbotron>
@@ -138,11 +140,10 @@ render() {
               disabled={!(this.state.title)}
               onClick={this.handleFormSubmit}
             >
-              Submit Book
+              Search Google Books API
               </FormBtn>
           </form>
-        </Col>
-        <Col size="md-6 sm-12">
+        
           <Jumbotron>
             <h1>Results</h1>
           </Jumbotron>
@@ -150,9 +151,19 @@ render() {
             <List>
               {this.state.books.map(book => (
                 <ListItem key={book._id}>
-                  <Link to={"/books/" + book._id}>
+                  <Link to={"/books/" + book.id}>
                     <strong>
-                      {book.title} by {book.author} published {book.published}
+
+                    <div><img 
+                  alt={`${book.title} book`}
+                  src={`http://books.google.com/books/content?id=${
+                    book.bookId
+                  }&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
+                /></div> 
+
+                      {book.title} by {book.author} published on {book.published}
+                     
+                    
                     </strong>
                   </Link>
                   <DeleteBtn onClick={() => this.deleteBook(book._id)} />

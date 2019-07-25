@@ -6,7 +6,9 @@ import "./style.css";
 export function List({ children }) {
   return (
     <div className="list-overflow-container">
+      <img className="listimage"></img>
       <ul className="list-group">{children}</ul>
+      
     </div>
   );
 }
