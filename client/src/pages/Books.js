@@ -7,6 +7,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from 'axios';
+import SaveBtn from "../components/SaveBtn";
 
 class Books extends Component {
 
@@ -14,34 +15,12 @@ class Books extends Component {
 
   state = {
     books: [],
-    title: "",
-    author: "",
-    synopsis: "",
-    searchTerm: "",
-
+    buttontext: "save"
+    
+  
   };
 
 
-
-
-
-
-
-
-
-  // componentDidMount() {
-  //   this.loadBooks();
-  // }
-
-  // loadBooks = () => {
-  //   API.getBooks()
-  //     .then(res =>
-  //       this.setState({ books: res.data, title: "", author: "", synopsis: "" })
-  //     )
-  //     .catch(err => console.log(err));
-  // };
-
-  
 
 loadBooks = searchItem => {
     //let test = "jaws"
@@ -58,6 +37,8 @@ loadBooks = searchItem => {
         title: `${result.volumeInfo.title}`,
         author: `${result.volumeInfo.authors}`,
         published: `${result.volumeInfo.publishedDate}`,
+        description: `${result.volumeInfo.description}`,
+        saved: ""
         
        
       })))
@@ -67,17 +48,27 @@ loadBooks = searchItem => {
   };
 
 
-deleteBook = id => {
-  API.deleteBook(id)
-    .then(res => this.loadBooks())
-    .catch(err => console.log(err));
-};
+addBook = book=> {
+  
+    API.saveBook({
+    title: book.title,
+    author: book.author,
+    description: book.description,
+    published: book.published,
+    bookId: book.bookId,
+    saved: "true",
+    
+  })
+  
+    //.then(update => this.setState({books.book_Id: update}))
+      .catch(err => console.log(err))
+    };
 
+Booksaved = tosave=> {
 
-
-
-
-
+  
+ 
+}
 
 
 handleInputChange = event => {
@@ -94,6 +85,11 @@ handleFormSubmit = event => {
     this.loadBooks(this.state.title);
   };
 
+  deleteBook = id => {
+    API.deleteBook(id)
+      .then(res => this.loadBooks())
+      .catch(err => console.log(err));
+  };
 
 
 
@@ -124,18 +120,7 @@ render() {
               name="title"
               placeholder="Title to search"
             />
-            {/* <Input
-                value={this.state.author}
-                onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              /> */}
-            {/* <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              /> */}
+           
             <FormBtn
               disabled={!(this.state.title)}
               onClick={this.handleFormSubmit}
@@ -151,7 +136,7 @@ render() {
             <List>
               {this.state.books.map(book => (
                 <ListItem key={book._id}>
-                  <Link to={"/books/" + book.id}>
+                  <div>
                     <strong>
 
                     <div><img 
@@ -161,12 +146,25 @@ render() {
                   }&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
                 /></div> 
 
-                      {book.title} by {book.author} published on {book.published}
-                     
+                      {book.title} by {book.author} published  {book.published}
+                      </strong>
+                     <div>{book.description} </div> 
                     
-                    </strong>
-                  </Link>
-                  <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                    
+                    
+                 
+                  < SaveBtn value={""} onClick={() => {this.addBook(book)
+                
+                }
+                   
+                   
+                       }  />
+                                     
+                                  
+
+                 
+                   
+                  </div>
                 </ListItem>
               ))}
             </List>

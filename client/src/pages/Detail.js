@@ -4,17 +4,52 @@ import { Col, Row, Container } from "../components/Grid";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 
-class Detail extends Component {
+
+
+import DeleteBtn from "../components/DeleteBtn";
+
+
+import { List, ListItem } from "../components/List";
+import { Input, TextArea, FormBtn } from "../components/Form";
+
+
+
+
+
+
+
+class Books extends Component {
+  // Setting our component's initial state
   state = {
-    book: {}
+    books: [],
+    title: "",
+    author: "",
+    description: "",
+    published: "",
+    bookId: "",
+    saved: ""
   };
-  // When this component mounts, grab the book with the _id of this.props.match.params.id
-  // e.g. localhost:3000/books/599dcb67f0f16317844583fc
+
+  // When the component mounts, load all books and save them to this.state.books
   componentDidMount() {
-    API.getBook(this.props.match.params.id)
-      .then(res => this.setState({ book: res.data }))
-      .catch(err => console.log(err));
+    this.loadBooks();
   }
+  
+  loadBooks = () => {
+    API.getBooks()
+      .then(res =>
+        this.setState({ books: res.data, title: "", author: "", description: "", published:"", bookId:"", })
+      )
+      .catch(err => console.log(err));
+  };
+
+
+  deleteBook = id => {
+    API.deleteBook(id)
+      .then(res => this.loadBooks())
+      .catch(err => console.log(err));
+  };
+
 
   render() {
     return (
@@ -36,22 +71,45 @@ class Detail extends Component {
             <Jumbotron>
               <h1>Saved Books</h1>
               
-              <h2>
-                {this.state.book.title} by {this.state.book.author}
-              </h2>
+              
             </Jumbotron>
           </Col>
-        </Row>
-        <Row>
-          <Col size="md-10 md-offset-1">
-            <article>
-              <h1>Synopsis</h1>
-              <p>
-                {this.state.book.synopsis}
-              </p>
-            </article>
-          </Col>
-        </Row>
+          </Row>
+        
+        
+        {this.state.books.length ? (
+              <List>
+                {this.state.books.map(book => {
+                  return (
+                    <ListItem key={book._id}>
+                      <div>
+                    <strong>
+
+                    <div><img 
+                  alt={`${book.title} book`}
+                  src={`http://books.google.com/books/content?id=${
+                    book.bookId
+                  }&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
+                /></div> 
+
+                      {book.title} by {book.author} published  {book.published}
+                      </strong>
+                     <div>{book.description} </div> 
+                    
+                    
+                      <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                    </div>
+                    </ListItem>
+                    
+                  );
+                })}
+              </List>) : (
+              <h3>No Results to Display</h3>
+            )}
+
+          
+        
+        
         <Row>
           <Col size="md-2">
             <Link to="/">← Back to Search</Link>
@@ -62,4 +120,4 @@ class Detail extends Component {
   }
 }
 
-export default Detail;
+export default Books;
