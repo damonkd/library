@@ -34,11 +34,11 @@ class Books extends Component {
   componentDidMount() {
     this.loadBooks();
   }
-  
+
   loadBooks = () => {
     API.getBooks()
       .then(res =>
-        this.setState({ books: res.data, title: "", author: "", description: "", published:"", bookId:"", })
+        this.setState({ books: res.data, title: "", author: "", description: "", published: "", bookId: "", })
       )
       .catch(err => console.log(err));
   };
@@ -70,46 +70,46 @@ class Books extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1>Saved Books</h1>
-              
-              
+
+
             </Jumbotron>
           </Col>
-          </Row>
-        
-        
+        </Row>
+
+
         {this.state.books.length ? (
-              <List>
-                {this.state.books.map(book => {
-                  return (
-                    <ListItem key={book._id}>
-                      <div>
+          <List>
+            {this.state.books.map(book => {
+              return (
+                <ListItem key={book._id}>
+                  <div>
                     <strong>
 
-                    <div><img 
-                  alt={`${book.title} book`}
-                  src={`http://books.google.com/books/content?id=${
-                    book.bookId
-                  }&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
-                /></div> 
+                      <div><img
+                        alt={`${book.title} book`}
+                        src={`http://books.google.com/books/content?id=${
+                          book.bookId
+                          }&printsec=frontcover&img=1&zoom=1&source=gbs_api`}
+                      /></div>
 
                       {book.title} by {book.author} published  {book.published}
-                      </strong>
-                     <div>{book.description} </div> 
-                    
-                    
-                      <DeleteBtn onClick={() => this.deleteBook(book._id)} />
-                    </div>
-                    </ListItem>
-                    
-                  );
-                })}
-              </List>) : (
-              <h3>No Results to Display</h3>
-            )}
+                    </strong>
+                    <div>{book.description} </div>
 
-          
-        
-        
+
+                    <DeleteBtn onClick={() => this.deleteBook(book._id)} />
+                  </div>
+                </ListItem>
+
+              );
+            })}
+          </List>) : (
+            <h3>No Results to Display</h3>
+          )}
+
+
+
+
         <Row>
           <Col size="md-2">
             <Link to="/">← Back to Search</Link>
